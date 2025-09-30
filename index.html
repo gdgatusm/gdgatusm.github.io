@@ -14,259 +14,224 @@
             --glow-color-2: #4da6ff;
             --accent-color-1: #00f0ff;
             --accent-color-2: #ff00c1;
+            --red-card: #ff3838;
+            --yellow-card: #ffb800;
         }
 
-        /* Custom fonts */
+        /* Custom fonts & Body */
         body {
             font-family: 'Orbitron', sans-serif;
             background-color: #0d0c22;
-            overflow: hidden; /* Hide scrollbars */
+            /* Custom corner flag cursor! */
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><path fill="%23d00" d="M4 2 L4 14 L18 8 Z" /><path fill="none" stroke="white" stroke-width="2" d="M4 2 L4 30" /></svg>'), auto;
         }
-        h1, .font-press-start {
+        h1, h2, h3, .font-press-start {
             font-family: 'Press Start 2P', cursive;
         }
 
-        /* Animated gradient background */
+        /* Vignette and Gradient Background */
         #background-wrapper {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: linear-gradient(-45deg, #0a011a, #1a0a3a, #0c2b3a, #23d5ab);
             background-size: 400% 400%;
             animation: gradientBG 20s ease infinite;
             z-index: -2;
         }
-
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        #background-wrapper::after {
+            content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            box-shadow: inset 0 0 150px rgba(0,0,0,0.8);
+            z-index: -1; pointer-events: none;
         }
+
+        @keyframes gradientBG { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
         
-        /* Scanlines overlay for retro feel */
+        /* Scanlines overlay */
         .scanlines {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: repeating-linear-gradient(
-                0deg,
-                rgba(0, 0, 0, 0) 0px,
-                rgba(0, 0, 0, 0) 1px,
-                rgba(0, 0, 0, 0.3) 2px,
-                rgba(0, 0, 0, 0.3) 3px
-            );
-            z-index: -1;
-            pointer-events: none;
-            animation: scanline-flicker 10s infinite linear;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: repeating-linear-gradient(0deg, rgba(0,0,0,0) 0px, rgba(0,0,0,0) 1px, rgba(0,0,0,0.3) 2px, rgba(0,0,0,0.3) 3px);
+            z-index: 100; pointer-events: none; animation: scanline-flicker 10s infinite linear;
         }
-        @keyframes scanline-flicker {
-            0% { opacity: 0.8; }
-            5% { opacity: 0.6; }
-            10% { opacity: 0.9; }
-            15% { opacity: 0.5; }
-            20% { opacity: 1; }
-            100% { opacity: 1; }
-        }
+        @keyframes scanline-flicker { 0% { opacity: 0.8; } 5% { opacity: 0.6; } 10% { opacity: 0.9; } 15% { opacity: 0.5; } 20% { opacity: 1; } 100% { opacity: 1; } }
 
-        /* Glowing text effect */
-        .glow {
-            animation: glow 2s ease-in-out infinite alternate;
-        }
-
+        /* Text Effects */
+        .glow { animation: glow 2s ease-in-out infinite alternate; }
         @keyframes glow {
-            from {
-                text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px var(--glow-color-1), 0 0 40px var(--glow-color-1), 0 0 50px var(--glow-color-1);
-            }
-            to {
-                text-shadow: 0 0 20px #fff, 0 0 30px var(--glow-color-2), 0 0 40px var(--glow-color-2), 0 0 50px var(--glow-color-2), 0 0 60px var(--glow-color-2);
-            }
+            from { text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px var(--glow-color-1), 0 0 40px var(--glow-color-1); }
+            to { text-shadow: 0 0 20px #fff, 0 0 30px var(--glow-color-2), 0 0 40px var(--glow-color-2), 0 0 60px var(--glow-color-2); }
         }
+        .subtitle-animate { animation: pulse-glow 3s infinite; }
+        @keyframes pulse-glow { 0%, 100% { color: var(--accent-color-1); text-shadow: 0 0 5px var(--accent-color-1); } 50% { color: white; text-shadow: 0 0 15px white; } }
         
-        /* Continuous animation for "WELCOME TO THE" */
-        .subtitle-animate {
-            animation: pulse-glow 3s infinite;
+        /* NEW "Screaming" Title Animation */
+        .title-char { 
+            display: inline-block; 
+            animation: scream-anim 1.5s ease-in-out infinite alternate;
         }
-        @keyframes pulse-glow {
-            0%, 100% { color: var(--accent-color-1); text-shadow: 0 0 5px var(--accent-color-1); }
-            50% { color: white; text-shadow: 0 0 15px white; }
-        }
-
-        /* Title letter animation */
-        .title-char {
-            display: inline-block;
-            animation: bounceIn 1s forwards;
-            opacity: 0;
-        }
-
-        @keyframes bounceIn {
-            0% { transform: scale(0.1) rotate(-90deg); opacity: 0; }
-            60% { transform: scale(1.2) rotate(10deg); opacity: 1; }
-            100% { transform: scale(1) rotate(0deg); }
-        }
-
-        /* General floating animation for quirky elements */
-        .quirky-float {
-            position: absolute;
-            animation: quirkyFloat 10s ease-in-out infinite;
-            filter: drop-shadow(0 0 10px rgba(0, 255, 255, 0.5));
-        }
-        @keyframes quirkyFloat {
-            0% { transform: translate(0, 0) rotate(0deg); }
-            25% { transform: translate(15px, 20px) rotate(5deg); }
-            50% { transform: translate(-10px, -15px) rotate(-3deg); }
-            75% { transform: translate(5px, -20px) rotate(8deg); }
-            100% { transform: translate(0, 0) rotate(0deg); }
-        }
-
-        /* Glitch button */
-        .glitch-button:before, .glitch-button:after {
-            content: 'REGISTER NOW'; /* Ensure this matches button text */
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: #0d0c22; overflow: hidden; clip: rect(0, 0, 0, 0);
-        }
-        .glitch-button:before { left: -2px; text-shadow: 2px 0 var(--accent-color-2); }
-        .glitch-button:after { left: 2px; text-shadow: -2px 0 var(--accent-color-1); }
-        .glitch-button:hover:before { animation: glitch-anim 0.5s infinite linear alternate-reverse; }
-        .glitch-button:hover:after { animation: glitch-anim2 0.5s infinite linear alternate-reverse; }
-        @keyframes glitch-anim { 0% { clip: rect(45px, 9999px, 98px, 0); } 100% { clip: rect(3px, 9999px, 86px, 0); } }
-        @keyframes glitch-anim2 { 0% { clip: rect(33px, 9999px, 105px, 0); } 100% { clip: rect(51px, 9999px, 73px, 0); } }
-
-        /* Background moving components */
-        #particle-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            overflow: hidden;
-            pointer-events: none;
-        }
-        .particle {
-            position: absolute;
-            bottom: -20px;
-            border-radius: 50%;
-            opacity: 0;
-            animation: move-up 10s linear infinite;
-        }
-        .particle.glitter {
-            background-color: var(--accent-color-1);
-            box-shadow: 0 0 5px var(--accent-color-1), 0 0 10px var(--accent-color-2);
-        }
-        .particle.binary {
-            color: #23d5ab;
-            background: transparent !important;
-            font-size: 1.5rem;
-            font-family: monospace;
-        }
-        .particle.gear {
-            background: transparent !important;
-            font-size: 1.5rem;
-            color: rgba(255,255,255,0.3);
-        }
-        @keyframes move-up {
+        @keyframes scream-anim {
+            0% {
+                transform: scale(1) skew(0);
+                color: white;
+                text-shadow: 0 0 10px #fff, 0 0 20px var(--glow-color-1);
+            }
             100% {
-                transform: translateY(-110vh) rotate(360deg);
-                opacity: 1;
+                transform: scale(1.15) skew(-5deg);
+                color: var(--accent-color-1);
+                text-shadow: 0 0 20px var(--accent-color-1), 0 0 40px var(--accent-color-1);
             }
         }
-        
-        /* Animated SVG Scene */
-        #robo-soccer-scene {
-            width: 100%;
-            max-width: 500px;
-            animation: scene-bob 5s ease-in-out infinite;
+
+        /* Background floating components */
+        #particle-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; overflow: hidden; pointer-events: none; }
+        .particle { position: absolute; bottom: -20px; border-radius: 50%; opacity: 0; animation: move-up 10s linear infinite; }
+        .particle.glitter { background-color: var(--accent-color-1); box-shadow: 0 0 5px var(--accent-color-1), 0 0 10px var(--accent-color-2); }
+        .particle.binary { color: #23d5ab; background: transparent !important; font-size: 1.5rem; font-family: monospace; }
+        .particle.gear { background: transparent !important; font-size: 1.5rem; color: rgba(255,255,255,0.3); }
+        .particle.spark { background-color: yellow; width: 2px; height: 15px; box-shadow: 0 0 10px yellow; }
+        .particle.text-particle { font-size: 1.5rem; color: rgba(255,255,255,0.4); }
+        @keyframes move-up { 100% { transform: translateY(-110vh) rotate(360deg); opacity: 1; } }
+
+        /* --- SENSORY OVERLOAD ELEMENTS --- */
+
+        /* Bouncing Soccer Ball */
+        #bouncing-ball {
+            position: fixed; z-index: 50; width: 50px; height: 50px;
+            bottom: 0;
+            animation: bounce-x 10s linear infinite, bounce-y 2.5s ease-out infinite;
         }
-        @keyframes scene-bob {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-15px); }
+        @keyframes bounce-x {
+            0%, 100% { left: 0; }
+            50% { left: calc(100vw - 50px); }
         }
-        #robot-1 { animation: robot-hover 3s ease-in-out infinite alternate; }
-        #robot-2 { animation: robot-hover 3.5s 0.5s ease-in-out infinite alternate; }
-        @keyframes robot-hover { from { transform: translateY(0); } to { transform: translateY(10px); } }
-        #ball { animation: ball-kick 2s linear infinite; transform-origin: center; }
-        @keyframes ball-kick {
-            0% { transform: translate(0, 0) rotate(0deg); }
-            45% { transform: translate(140px, -60px) rotate(180deg); }
-            50% { transform: translate(150px, -70px) rotate(360deg); }
-            95% { transform: translate(-140px, -60px) rotate(540deg); }
-            100% { transform: translate(0, 0) rotate(720deg); }
+        @keyframes bounce-y {
+            0% { transform: translateY(0) rotate(0deg); animation-timing-function: ease-out; }
+            50% { transform: translateY(-80vh) rotate(720deg); animation-timing-function: ease-in; }
+            100% { transform: translateY(0) rotate(1440deg); animation-timing-function: ease-out; }
         }
-        #goal-spark { animation: goal-flash 2s 0.9s linear infinite; opacity: 0; }
-        @keyframes goal-flash {
-            0%, 100% { opacity: 0; transform: scale(0.5); }
-            5%, 20% { opacity: 1; transform: scale(1.2); }
-            25% { opacity: 0; }
+
+        /* Scrolling Marquee */
+        .marquee {
+            position: fixed; bottom: 0; left: 0; width: 100%;
+            background-color: rgba(0,0,0,0.7); color: var(--accent-color-1);
+            white-space: nowrap; overflow: hidden; z-index: 50; padding: 5px 0;
+            font-family: 'Press Start 2P', cursive;
         }
+        .marquee span { display: inline-block; padding-left: 100%; animation: marquee-scroll 30s linear infinite; }
+        @keyframes marquee-scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
+
+        /* Scroll-triggered Animations */
+        .scroll-animate { opacity: 0; transform: translateY(50px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
+        .scroll-animate.visible { opacity: 1; transform: translateY(0); }
+
+        /* Pong Game Effects */
+        #robo-soccer-scene { width: 100%; max-width: 500px; animation: scene-bob 5s ease-in-out infinite; }
+        @keyframes scene-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+        .hit-effect { animation: hit-flash 0.3s ease-out; }
+        @keyframes hit-flash { 0%, 100% { filter: drop-shadow(0 0 0px white); } 50% { filter: drop-shadow(0 0 15px white); } }
+        #goal-spark.flash { animation: goal-flash-anim 0.5s ease-out; }
+        @keyframes goal-flash-anim { 0% { opacity: 1; transform: scale(1.5); } 100% { opacity: 0; transform: scale(0); } }
+
+        /* General Styles */
+        main { min-height: 100vh; }
+        section { min-height: 80vh; }
     </style>
 </head>
-<body class="text-white relative min-h-screen flex items-center justify-center p-4">
+<body class="text-white relative p-4">
 
     <div id="background-wrapper"></div>
     <div id="particle-container"></div>
     <div class="scanlines"></div>
 
-    <!-- Additional quirky floating elements -->
-    <div class="quirky-float top-1/4 left-1/4 w-24 opacity-50">
-        <!-- Coding Terminal -->
-        <svg viewBox="0 0 100 80"><rect width="100" height="80" rx="5" fill="#1a202c"/><path d="M10 15 L30 15 M10 25 L70 25 M10 35 L50 35" stroke="#4299e1" stroke-width="4"/><path d="M10 50 L15 55 L10 60" stroke="#38a169" fill="none" stroke-width="4"/></svg>
+    <!-- ===== SENSORY OVERLOAD ELEMENTS ===== -->
+    <div id="bouncing-ball">
+        <svg viewBox="-50 -50 100 100" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="0" cy="0" r="48" fill="white" stroke="#555" stroke-width="1"/>
+            <!-- Center Pentagon -->
+            <polygon fill="black" points="0,-20 19,-6 12,20 -12,20 -19,-6"/>
+            <!-- Surrounding Hexagons -->
+            <polygon fill="white" stroke="black" stroke-width="1.5" points="0,-20 19,-6 17,-28 -0,-38 -17,-28 -19,-6" />
+            <polygon fill="white" stroke="black" stroke-width="1.5" points="19,-6 12,20 31,26 40,8 35,-12" />
+            <polygon fill="white" stroke="black" stroke-width="1.5" points="12,20 -12,20 -15,40 8,46 31,26" />
+            <polygon fill="white" stroke="black" stroke-width="1.5" points="-12,20 -19,-6 -35,-12 -40,8 -31,26" />
+            <polygon fill="white" stroke="black" stroke-width="1.5" points="-19,-6 0,-20 -17,-28 -35,-12" />
+        </svg>
     </div>
-    <div class="quirky-float bottom-1/4 right-1/4 w-24 opacity-50" style="animation-duration: 12s;">
-        <!-- Robo War Bot -->
-        <svg viewBox="0 0 100 100"><path d="M50 10 L80 40 L70 90 L30 90 L20 40 Z" fill="#718096"/><rect x="45" y="20" width="10" height="20" fill="#e53e3e"/><path d="M10 70 L-10 50 L10 30" stroke="#f56565" stroke-width="5" fill="none"/></svg>
+    <div class="marquee">
+        <span>
+            LATEST NEWS: R2D2-FC RUMORED TO SIGN NEW WONDERKID... WILL WE SEE A MESSI-BOT 2.0?... CR7-UNIT 7 CLAIMS HE CAN CALCULATE 1,000 GOALS PER SECOND... T-800 DEFENDERS ACCUSED OF BEING "TOO PHYSICAL"...
+        </span>
     </div>
-    
-    <main class="text-center relative z-10 flex flex-col items-center">
+    <!-- ===================================== -->
+
+    <main class="text-center relative z-10 flex flex-col items-center justify-center">
         <!-- Animated Robo Soccer SVG -->
         <div class="mb-8">
             <svg id="robo-soccer-scene" viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
-                <!-- Field -->
                 <rect width="400" height="200" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="2"/>
                 <line x1="200" y1="0" x2="200" y2="200" stroke="rgba(255,255,255,0.3)" stroke-width="1" stroke-dasharray="4"/>
                 <circle cx="200" cy="100" r="40" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
-                <!-- Goal Left -->
                 <rect x="-2" y="70" width="20" height="60" fill="none" stroke="#ff00c1" stroke-width="3"/>
-                <!-- Goal Right -->
                 <rect x="382" y="70" width="20" height="60" fill="none" stroke="#00f0ff" stroke-width="3"/>
-                <g id="goal-spark" transform="translate(392, 100)">
-                    <path d="M0-20L10 0L0 20L-10 0Z" fill="yellow"/>
-                    <path d="M-15-15L15 15 M-15 15L15 -15" stroke="yellow" stroke-width="3"/>
-                </g>
-                <!-- Robot 1 -->
-                <g id="robot-1" transform="translate(80, 100)">
-                    <rect x="-15" y="0" width="30" height="30" rx="5" fill="#ff00c1"/>
-                    <circle cx="0" cy="15" r="20" fill="none" stroke="white" stroke-width="2"/>
-                    <circle cx="0" cy="-10" r="8" fill="#4a5568"/>
-                </g>
-                <!-- Robot 2 -->
-                <g id="robot-2" transform="translate(320, 100)">
-                    <rect x="-15" y="0" width="30" height="30" rx="5" fill="#00f0ff"/>
-                    <polygon points="0,-15 15,0 -15,0" fill="#4a5568"/>
-                </g>
-                <!-- Ball -->
-                <g id="ball" transform="translate(200, 100)">
-                     <circle r="10" fill="white"/>
-                     <path d="M0 -10 L5 0 L-5 0 Z M0 10 L5 0 L-5 0 Z" fill="black"/>
-                </g>
+                <g id="goal-spark" style="opacity:0;"><path d="M0-20L10 0L0 20L-10 0Z" fill="yellow"/><path d="M-15-15L15 15 M-15 15L15 -15" stroke="yellow" stroke-width="3"/></g>
+                <g id="robot-1" transform="translate(80, 100)"><rect x="-15" y="-15" width="30" height="30" rx="5" fill="#ff00c1"/><circle cx="0" cy="0" r="20" fill="none" stroke="white" stroke-width="2"/><circle cx="0" cy="-20" r="8" fill="#4a5568"/></g>
+                <g id="robot-2" transform="translate(320, 100)"><rect x="-15" y="-15" width="30" height="30" rx="5" fill="#00f0ff"/><polygon points="0,-25 15,-15 -15,-15" fill="#4a5568"/></g>
+                <g id="ball" transform="translate(200, 100)"><circle r="10" fill="white"/><path d="M0 -10 L5 0 L-5 0 Z M0 10 L5 0 L-5 0 Z" fill="black"/></g>
             </svg>
         </div>
-        
         <h2 class="text-xl md:text-2xl mb-4 tracking-widest subtitle-animate">WELCOME TO THE</h2>
-        
         <h1 id="main-title" class="text-4xl md:text-6xl lg:text-7xl font-bold text-white glow mb-8 uppercase"></h1>
-
         <p class="max-w-2xl mx-auto text-lg md:text-xl text-gray-300 mb-12">
-            The future of sport is here! Witness cutting-edge robotics, lightning-fast circuits, and mind-blowing goals. The ultimate clash of code and metal awaits.
+            The ultimate clash of code and metal awaits. The future of sport is here!
         </p>
-
         <button class="glitch-button relative font-press-start text-xl px-10 py-5 bg-transparent text-cyan-300 rounded-md border-2 border-cyan-300">
             REGISTER NOW
         </button>
+        <div class="fixed top-1/2 right-2 transform -translate-y-1/2 text-white animate-pulse z-20" style="writing-mode: vertical-rl;">
+            <p class="mb-4 tracking-widest">Scroll For More</p>
+            <svg class="w-6 h-6 mx-auto" style="transform: rotate(90deg);" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+        </div>
     </main>
+
+    <section class="container mx-auto py-20 px-4 text-center flex flex-col justify-center items-center">
+        <div class="scroll-animate">
+            <h2 class="text-3xl md:text-5xl glow mb-8">About The Tournament</h2>
+            <p class="max-w-3xl mx-auto text-lg text-gray-300 mb-6">This isn't just a game; it's a fusion of learning, entertainment, and cutting-edge tech. A joint effort by the <span class="text-cyan-300">Google Developer Groups (GDG)</span>, the <span class="text-pink-400">Cyber Innovation Lab</span>, and the <span class="text-yellow-300">School of Computing</span> to build a vibrant community and showcase incredible talent.</p>
+            <p class="max-w-3xl mx-auto text-lg text-gray-300">We're even broadcasting matches live into <span class="text-green-400">real-time Gaussian Splat viewers</span>, so you can watch in VR! How cool is that?</p>
+        </div>
+    </section>
+
+    <section class="container mx-auto py-20 px-4 text-center flex flex-col justify-center items-center">
+        <div class="scroll-animate">
+            <h2 class="text-3xl md:text-5xl glow mb-8">Build. Code. Conquer.</h2>
+            <p class="max-w-3xl mx-auto text-lg text-gray-300 mb-6">Participants gain invaluable career-ready skills. This is where theory meets glorious, chaotic reality.</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+                <div class="bg-gray-800/50 p-6 rounded-lg border border-cyan-500 shadow-lg">
+                    <h3 class="text-2xl text-cyan-300 mb-3">Arduino & Robotics</h3>
+                    <p>Learn to write code to control hardware, manage sensors, and execute flawless robotic maneuvers.</p>
+                </div>
+                <div class="bg-gray-800/50 p-6 rounded-lg border border-pink-500 shadow-lg">
+                    <h3 class="text-2xl text-pink-400 mb-3">Teamwork</h3>
+                    <p>Success requires communication, strategy, and leveraging the diverse strengths of your teammates.</p>
+                </div>
+                <div class="bg-gray-800/50 p-6 rounded-lg border border-yellow-500 shadow-lg">
+                    <h3 class="text-2xl text-yellow-300 mb-3">Problem-Solving</h3>
+                    <p>Debugging code or troubleshooting a faulty motor is the heart of the engineering process. Embrace the chaos!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+     <section class="container mx-auto py-20 px-4 text-center flex flex-col justify-center items-center">
+        <div class="scroll-animate">
+            <h2 class="text-3xl md:text-5xl glow mb-8">Proposed Timeline</h2>
+            <p class="max-w-3xl mx-auto text-lg text-gray-300 mb-6">The countdown has begun. Here is the master plan for robotic domination.</p>
+            <ul class="text-left max-w-md mx-auto list-disc list-inside text-lg text-gray-300 space-y-3">
+                <li><span class="text-cyan-300 font-bold">Early Sept:</span> Funding & Registration Opens</li>
+                <li><span class="text-cyan-300 font-bold">Mid-Sept:</span> Kickoff Meeting & Kit Distribution</li>
+                <li><span class="text-cyan-300 font-bold">Late Sept - Oct:</span> Teams Build & Test their Bots</li>
+                <li><span class="text-yellow-300 font-bold">October 29, 2025:</span> TOURNAMENT DAY!</li>
+            </ul>
+        </div>
+    </section>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
@@ -282,35 +247,94 @@
                 titleContainer.appendChild(span);
             });
 
-            // --- Generate 100+ moving components ---
+            // --- Particle Generator ---
             const particleContainer = document.getElementById('particle-container');
-            const particleTypes = ['glitter', 'binary', 'gear'];
-            const numParticles = 120;
-
+            const particleTypes = ['glitter', 'binary', 'gear', 'spark', 'red-card', 'yellow-card', 'trophy', 'whistle'];
+            const numParticles = 250; 
             for (let i = 0; i < numParticles; i++) {
                 const p = document.createElement('div');
                 const type = particleTypes[Math.floor(Math.random() * particleTypes.length)];
-                p.classList.add('particle', type);
-
                 p.style.left = `${Math.random() * 100}vw`;
-                p.style.animationDuration = `${Math.random() * 5 + 5}s`;
-                p.style.animationDelay = `${Math.random() * 5}s`;
                 
-                if (type === 'glitter') {
-                    const size = `${Math.random() * 3 + 2}px`;
-                    p.style.width = size;
-                    p.style.height = size;
-                } else if (type === 'binary') {
-                    p.textContent = Math.random() > 0.5 ? '1' : '0';
-                } else if (type === 'gear') {
-                    p.textContent = '⚙';
-                }
+                p.classList.add('particle');
+                p.style.animationDuration = `${Math.random() * 7 + 5}s`;
+                p.style.animationDelay = `${Math.random() * 7}s`;
 
+                if (type === 'glitter') { const size = `${Math.random() * 3 + 2}px`; p.style.width = size; p.style.height = size; p.classList.add('glitter');} 
+                else if (type === 'binary') { p.textContent = Math.random() > 0.5 ? '1' : '0'; p.classList.add('binary'); } 
+                else if (type === 'gear') { p.textContent = '⚙'; p.classList.add('gear'); }
+                else if (type === 'spark') { p.textContent = '⚡'; p.style.color = 'yellow'; p.classList.add('text-particle');}
+                else if (type === 'trophy') { p.textContent = '🏆'; p.classList.add('text-particle');}
+                else if (type === 'whistle') { p.textContent = ' whistle '; p.classList.add('text-particle');}
+                else if (type === 'red-card') { p.textContent = '🟥'; p.classList.add('text-particle');}
+                else if (type === 'yellow-card') { p.textContent = '🟨'; p.classList.add('text-particle');}
+                
                 particleContainer.appendChild(p);
             }
+
+            // --- Scroll Animation Observer ---
+            const scrollElements = document.querySelectorAll('.scroll-animate');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+            }, { threshold: 0.1 });
+            scrollElements.forEach(el => observer.observe(el));
+
+            // --- Robo Soccer Pong Game Logic ---
+            const ball = document.getElementById('ball');
+            const robot1 = document.getElementById('robot-1');
+            const robot2 = document.getElementById('robot-2');
+            const goalSpark = document.getElementById('goal-spark');
+            const fieldWidth = 400, fieldHeight = 200;
+            let ballState = { x: 200, y: 100, vx: 3, vy: 2, radius: 10 };
+            let robot1State = { x: 80, y: 100, width: 30, height: 50 };
+            let robot2State = { x: 320, y: 100, width: 30, height: 50 };
+
+            function resetBall() {
+                ballState.x = fieldWidth / 2;
+                ballState.y = Math.random() * (fieldHeight - 40) + 20;
+                ballState.vx = (Math.random() > 0.5 ? 1 : -1) * 3;
+                ballState.vy = (Math.random() - 0.5) * 4;
+            }
+
+            function gameLoop() {
+                ballState.x += ballState.vx;
+                ballState.y += ballState.vy;
+
+                if (ballState.y + ballState.radius > fieldHeight || ballState.y - ballState.radius < 0) ballState.vy *= -1;
+
+                robot1State.y += (ballState.y - robot1State.y) * 0.1;
+                robot2State.y += (ballState.y - robot2State.y) * 0.1;
+                robot1State.y = Math.max(25, Math.min(robot1State.y, fieldHeight - 25));
+                robot2State.y = Math.max(25, Math.min(robot2State.y, fieldHeight - 25));
+
+                if (ballState.vx < 0 && ballState.x - ballState.radius < robot1State.x + robot1State.width / 2 && ballState.x - ballState.radius > robot1State.x - robot1State.width / 2 && Math.abs(ballState.y - robot1State.y) < robot1State.height / 2) {
+                    ballState.vx *= -1.1; ballState.vy += (ballState.y - robot1State.y) * 0.1;
+                    robot1.classList.add('hit-effect'); setTimeout(()=>robot1.classList.remove('hit-effect'), 300);
+                }
+                if (ballState.vx > 0 && ballState.x + ballState.radius > robot2State.x - robot2State.width / 2 && ballState.x + ballState.radius < robot2State.x + robot2State.width / 2 && Math.abs(ballState.y - robot2State.y) < robot2State.height / 2) {
+                    ballState.vx *= -1.1; ballState.vy += (ballState.y - robot2State.y) * 0.1;
+                    robot2.classList.add('hit-effect'); setTimeout(()=>robot2.classList.remove('hit-effect'), 300);
+                }
+                ballState.vx = Math.min(10, Math.max(-10, ballState.vx));
+
+                if (ballState.x < 0 || ballState.x > fieldWidth) {
+                    goalSpark.setAttribute('transform', `translate(${ballState.x < 0 ? 392 : 8}, 100)`);
+                    goalSpark.classList.add('flash'); 
+                    setTimeout(() => {
+                        goalSpark.classList.remove('flash');
+                    }, 500);
+                    resetBall();
+                }
+
+                ball.setAttribute('transform', `translate(${ballState.x}, ${ballState.y})`);
+                robot1.setAttribute('transform', `translate(${robot1State.x}, ${robot1State.y})`);
+                robot2.setAttribute('transform', `translate(${robot2State.x}, ${robot2State.y})`);
+                requestAnimationFrame(gameLoop);
+            }
+            gameLoop();
         });
     </script>
-
 </body>
 </html>
+
 
